@@ -95,6 +95,25 @@ Ponto InstanciaBZ::ObtemPosicao()
 }
 void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
 {
-    //cout << "AtualizaPosicao" << endl;
+    cout << "tAtual" << tAtual << endl;
+    if (direcao==1)
+        tAtual +=0.01;
+    else
+        tAtual -=0.01;
+    
+    if(tAtual > 1)
+    {
+        tAtual = 1.0;
+        direcao = -1;
+    }
+    if (tAtual < 0.0)
+    {
+        tAtual = 0.0;
+        direcao = 1;
+    }
+
+    Ponto P = Curva.Calcula(tAtual);
+    
+    Posicao = P;
 }
 

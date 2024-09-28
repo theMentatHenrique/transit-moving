@@ -79,6 +79,7 @@ void animate()
     {
         AccumDeltaT = 0;
         angulo += 2;
+        //Personagens[1].Rotacao++;
         glutPostRedisplay();
     }
     if (TempoTotal > 5.0)
@@ -143,6 +144,10 @@ void DesenhaTriangulo()
         glVertex2f(2,-2);
     glEnd();
 }
+void DesenhaFanstasma()
+{
+    
+}
 // **********************************************************************
 // Esta funcao deve instanciar todos os personagens do cenario
 // **********************************************************************
@@ -150,15 +155,16 @@ void CriaInstancias()
 {
     Personagens[0].Posicao = Ponto(0, 0);
     Personagens[0].Rotacao = 0;
-    Personagens[0].modelo = DesenhaPersonagem;
+    Personagens[0].modelo = DesenhaTriangulo;
     Personagens[0].Escala = Ponto(1, 1, 1);
+    
 
-    Personagens[1].Posicao = Ponto(5, 0);
+    Personagens[1].Posicao = Ponto(5, 5);
     Personagens[1].Rotacao = 0;
     Personagens[1].modelo = DesenhaTriangulo;
     Personagens[1].Escala = Ponto(1, 1, 1);
-
-    nInstancias = 2;
+    
+    nInstancias = 1;
 
 }
 // **********************************************************************
@@ -183,11 +189,11 @@ void CarregaModelos()
 // **********************************************************************
 void CriaCurvas()
 {
-    Curvas[0] = Bezier(Ponto(-5, -5), Ponto(0, 6), Ponto(5, -5));
-    Curvas[1] = Bezier(Ponto(5, -5), Ponto(15, 0), Ponto(12, 12));
-    Curvas[2] = Bezier(Ponto(-10, -5), Ponto(-15, 15), Ponto(12, 12));
+    //Curvas[0] = Bezier(Ponto(-5, -5), Ponto(0, 6), Ponto(5, -5));
+    //Curvas[1] = Bezier(Ponto(5, -5), Ponto(15, 0), Ponto(12, 12));
+    Curvas[0] = Bezier(Ponto(-10, -5), Ponto(-15, 15), Ponto(12, 12));
 
-    nCurvas = 3;
+    nCurvas = 1;
 }
 // **********************************************************************
 //
@@ -195,6 +201,9 @@ void CriaCurvas()
 void AssociaPersonagemComCurva(int p, int c)
 {
     Personagens[p].Curva = Curvas[c];
+    Personagens[p].tAtual = 0.5;
+    Personagens[p].direcao = 1;
+    
 }
 // **********************************************************************
 //
@@ -202,7 +211,7 @@ void AssociaPersonagemComCurva(int p, int c)
 void init()
 {
     // Define a cor do fundo da tela (AZUL)
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
 
     // carrega os modelos armazenados em arquivos
     CarregaModelos();
@@ -212,6 +221,8 @@ void init()
 
     // carrega as curvas que farao parte do cenario
     CriaCurvas();
+    
+    AssociaPersonagemComCurva(0, 0);
 
     // define is limites da área de desenho
     float d = 15;
@@ -277,6 +288,7 @@ void display(void)
 
     DesenhaEixos();
 
+    //AtualizaCenario();
     DesenhaCurvas();
     
     // Desenha os personagens no tempo T2.getDeltaT()
@@ -311,9 +323,15 @@ void ContaTempo(double tempo)
 // **********************************************************************
 void keyboard(unsigned char key, int x, int y)
 {
-
+    Ponto P;
     switch (key)
     {
+        case 'a':
+                
+                P = Curvas[1].Calcula(0);
+                P.imprime("Pra t==0 :");
+                break;
+
     case 27:     // Termina o programa qdo
         exit(0); // a tecla ESC for pressionada
         break;
@@ -335,10 +353,10 @@ void arrow_keys(int a_keys, int x, int y)
     switch (a_keys)
     {
     case GLUT_KEY_LEFT:
-        Personagens[1].Posicao.x -= 0.5;
+            Personagens[1].Rotacao+=2;
         break;
     case GLUT_KEY_RIGHT:
-        Personagens[1].Rotacao++;
+        Personagens[1].Rotacao-=2;
         break;
     case GLUT_KEY_UP:     // Se pressionar UP
         glutFullScreen(); // Vai para Full Screen
