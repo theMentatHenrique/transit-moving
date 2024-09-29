@@ -58,7 +58,6 @@ bool desenha = false;
 
 Poligono Mapa, MeiaSeta, Mastro;
 int nInstancias = 0;
-int corTriangulo = 0;
 
 float angulo = 0.0;
 
@@ -158,7 +157,6 @@ void CriaInstancias()
     Personagens[0].Posicao = Ponto(0, 0);
     Personagens[0].Rotacao = 0;
     defineCor(BlueViolet);
-    corTriangulo = Maroon;
     Personagens[0].cor = Maroon;
     Personagens[0].modelo = []() {
         defineCor(Personagens[0].cor);
@@ -173,7 +171,6 @@ void CriaInstancias()
     
     Personagens[1].Posicao = Ponto(5, 5);
     Personagens[1].Rotacao = 0;
-    corTriangulo = BlueViolet;
     Personagens[1].cor = Gold;
     Personagens[1].modelo = []() {
         defineCor(Personagens[1].cor);
