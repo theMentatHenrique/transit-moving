@@ -163,8 +163,9 @@ void CriaInstancias()
     Personagens[1].Rotacao = 0;
     Personagens[1].modelo = DesenhaTriangulo;
     Personagens[1].Escala = Ponto(1, 1, 1);
+    Personagens[1].cor = 0x123455;
     
-    nInstancias = 1;
+    nInstancias = 2;
 
 }
 // **********************************************************************
@@ -192,8 +193,9 @@ void CriaCurvas()
     //Curvas[0] = Bezier(Ponto(-5, -5), Ponto(0, 6), Ponto(5, -5));
     //Curvas[1] = Bezier(Ponto(5, -5), Ponto(15, 0), Ponto(12, 12));
     Curvas[0] = Bezier(Ponto(-10, -5), Ponto(-15, 15), Ponto(12, 12));
+    Curvas[1] = Bezier(Ponto(10, 5), Ponto(15, -15), Ponto(-12, -12));
 
-    nCurvas = 1;
+    nCurvas = 2;
 }
 // **********************************************************************
 //
@@ -223,6 +225,7 @@ void init()
     CriaCurvas();
     
     AssociaPersonagemComCurva(0, 0);
+    AssociaPersonagemComCurva(1, 1);
 
     // define is limites da área de desenho
     float d = 15;
@@ -258,10 +261,9 @@ void DesenhaCurvas()
 {
     for (int i = 0; i < nCurvas; i++)
     {
-        defineCor(OrangeRed);
         glLineWidth(4);
         Curvas[i].Traca();
-        defineCor(VioletRed);
+        defineCor(DarkGreen);
         glLineWidth(2);
         DesenhaPoligonoDeControle(i);
     }
