@@ -138,6 +138,17 @@ void DesenhaPersonagem()
 // **********************************************************************
 void DesenhaTriangulo()
 {
+    defineCor(Maroon);
+    glBegin(GL_TRIANGLES);
+        glVertex2f(-2,-2);
+        glVertex2f(0, 2);
+        glVertex2f(2,-2);
+    glEnd();
+}
+
+void DesenhaTriangulo2()
+{
+    defineCor(Gold);
     glBegin(GL_TRIANGLES);
         glVertex2f(-2,-2);
         glVertex2f(0, 2);
@@ -155,15 +166,15 @@ void CriaInstancias()
 {
     Personagens[0].Posicao = Ponto(0, 0);
     Personagens[0].Rotacao = 0;
+    defineCor(BlueViolet);
     Personagens[0].modelo = DesenhaTriangulo;
     Personagens[0].Escala = Ponto(1, 1, 1);
     
-
     Personagens[1].Posicao = Ponto(5, 5);
     Personagens[1].Rotacao = 0;
-    Personagens[1].modelo = DesenhaTriangulo;
+    defineCor(Gold);
+    Personagens[1].modelo = DesenhaTriangulo2;
     Personagens[1].Escala = Ponto(1, 1, 1);
-    Personagens[1].cor = 0x123455;
     
     nInstancias = 2;
 
@@ -261,11 +272,10 @@ void DesenhaCurvas()
 {
     for (int i = 0; i < nCurvas; i++)
     {
+        defineCor(Curvas[i].cor);
         glLineWidth(4);
         Curvas[i].Traca();
-        defineCor(DarkGreen);
-        glLineWidth(2);
-        DesenhaPoligonoDeControle(i);
+     
     }
 }
 // **********************************************************************
