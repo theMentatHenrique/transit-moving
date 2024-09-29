@@ -58,6 +58,7 @@ bool desenha = false;
 
 Poligono Mapa, MeiaSeta, Mastro;
 int nInstancias = 0;
+int corTriangulo = 0;
 
 float angulo = 0.0;
 
@@ -138,7 +139,6 @@ void DesenhaPersonagem()
 // **********************************************************************
 void DesenhaTriangulo()
 {
-    defineCor(Maroon);
     glBegin(GL_TRIANGLES);
         glVertex2f(-2,-2);
         glVertex2f(0, 2);
@@ -146,15 +146,6 @@ void DesenhaTriangulo()
     glEnd();
 }
 
-void DesenhaTriangulo2()
-{
-    defineCor(Gold);
-    glBegin(GL_TRIANGLES);
-        glVertex2f(-2,-2);
-        glVertex2f(0, 2);
-        glVertex2f(2,-2);
-    glEnd();
-}
 void DesenhaFanstasma()
 {
     
@@ -167,13 +158,31 @@ void CriaInstancias()
     Personagens[0].Posicao = Ponto(0, 0);
     Personagens[0].Rotacao = 0;
     defineCor(BlueViolet);
-    Personagens[0].modelo = DesenhaTriangulo;
+    corTriangulo = Maroon;
+    Personagens[0].cor = Maroon;
+    Personagens[0].modelo = []() {
+        defineCor(Personagens[0].cor);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(-2,-2);
+        glVertex2f(0, 2);
+        glVertex2f(2,-2);
+        glEnd();
+    };
     Personagens[0].Escala = Ponto(1, 1, 1);
+    
     
     Personagens[1].Posicao = Ponto(5, 5);
     Personagens[1].Rotacao = 0;
-    defineCor(Gold);
-    Personagens[1].modelo = DesenhaTriangulo2;
+    corTriangulo = BlueViolet;
+    Personagens[1].cor = Gold;
+    Personagens[1].modelo = []() {
+        defineCor(Personagens[1].cor);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(-2,-2);
+        glVertex2f(0, 2);
+        glVertex2f(2,-2);
+        glEnd();
+    };;
     Personagens[1].Escala = Ponto(1, 1, 1);
     
     nInstancias = 2;
@@ -204,7 +213,7 @@ void CriaCurvas()
     //Curvas[0] = Bezier(Ponto(-5, -5), Ponto(0, 6), Ponto(5, -5));
     //Curvas[1] = Bezier(Ponto(5, -5), Ponto(15, 0), Ponto(12, 12));
     Curvas[0] = Bezier(Ponto(-10, -5), Ponto(-15, 15), Ponto(12, 12));
-    Curvas[1] = Bezier(Ponto(10, 5), Ponto(15, -15), Ponto(-12, -12));
+    Curvas[1] = Bezier(Ponto(-10, -5), Ponto(15, -15), Ponto(12, 12));
 
     nCurvas = 2;
 }
