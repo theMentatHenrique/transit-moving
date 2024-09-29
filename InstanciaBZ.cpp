@@ -94,8 +94,7 @@ Ponto InstanciaBZ::ObtemPosicao()
     return PosicaoDoPersonagem;
 }
 void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
-{
-    cout << "tAtual" << tAtual << endl;
+{   if (isStopped) return; 
     if (direcao==1)
         tAtual +=0.01;
     else
