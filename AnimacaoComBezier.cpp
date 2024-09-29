@@ -64,6 +64,7 @@ float angulo = 0.0;
 double nFrames = 0;
 double TempoTotal = 0;
 
+
 // **********************************************************************
 //
 // **********************************************************************
@@ -256,8 +257,12 @@ void DesenhaPersonagens(float tempoDecorrido)
     //cout << "nInstancias: " << nInstancias << endl;
     for (int i = 0; i < nInstancias; i++)
     {
+        if (Personagens[0].Posicao == Personagens[1].Posicao) {
+        Personagens[1].isStopped = true;
+        }
         Personagens[i].AtualizaPosicao(tempoDecorrido);
-        Personagens[i].desenha();
+        Personagens[i].desenha(); 
+
     }
 }
 void DesenhaPoligonoDeControle(int curva)
@@ -278,7 +283,7 @@ void DesenhaCurvas()
 {
     for (int i = 0; i < nCurvas; i++)
     {
-        defineCor(Curvas[i].cor);
+        defineCor(Personagens[i].cor);
         glLineWidth(4);
         Curvas[i].Traca();
      
