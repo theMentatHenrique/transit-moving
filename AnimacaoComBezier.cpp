@@ -258,7 +258,6 @@ void DesenhaPersonagens(float tempoDecorrido)
     for (int i = 0; i < nInstancias; i++)
     {
         if (Personagens[0].Posicao == Personagens[1].Posicao) {
-        Personagens[1].isStopped = true;
         }
         Personagens[i].AtualizaPosicao(tempoDecorrido);
         Personagens[i].desenha(); 
