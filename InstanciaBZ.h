@@ -35,7 +35,6 @@ public:
     float Velocidade;
     float tAtual;
     int direcao; // andando do fim para o inicio, ou ao contrario
-
     void desenha();
     void AtualizaPosicao(float tempoDecorrido);
     Ponto ObtemPosicao();
