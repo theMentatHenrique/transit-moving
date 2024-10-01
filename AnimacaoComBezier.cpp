@@ -183,7 +183,7 @@ void CriaInstancias()
     };;
     Personagens[1].Escala = Ponto(1, 1, 1);
     
-    nInstancias = 2;
+    nInstancias = 1;
 
 }
 // **********************************************************************
@@ -211,18 +211,18 @@ void CriaCurvas()
     //Curvas[0] = Bezier(Ponto(-5, -5), Ponto(0, 6), Ponto(5, -5));
     //Curvas[1] = Bezier(Ponto(5, -5), Ponto(15, 0), Ponto(12, 12));
     Curvas[0] = Bezier(Ponto(-10, -5), Ponto(-15, 15), Ponto(12, 12));
-    Curvas[1] = Bezier(Ponto(-10, -5), Ponto(15, -15), Ponto(12, 12));
+    Curvas[1] = Bezier(Ponto(12, 12), Ponto(15, -15), Ponto(-12, -12));
 
     nCurvas = 2;
 }
 // **********************************************************************
 //
 // **********************************************************************
-void AssociaPersonagemComCurva(int p, int c)
+void AssociaPersonagemComCurva(int p, int c, int direcao)
 {
     Personagens[p].Curva = Curvas[c];
-    Personagens[p].tAtual = 0.5;
-    Personagens[p].direcao = 1;
+    Personagens[p].tAtual = 0.0;
+    Personagens[p].direcao = direcao;
     
 }
 // **********************************************************************
@@ -242,8 +242,8 @@ void init()
     // carrega as curvas que farao parte do cenario
     CriaCurvas();
     
-    AssociaPersonagemComCurva(0, 0);
-    AssociaPersonagemComCurva(1, 1);
+    AssociaPersonagemComCurva(0, 1,1);
+    //AssociaPersonagemComCurva(1, 1);
 
     // define is limites da área de desenho
     float d = 15;
@@ -251,19 +251,49 @@ void init()
     Max = Ponto(d, d);
 }
 
+bool isDiferentCurve(Bezier b1, Bezier b2)
+{
+    if (b1.Coords[0] == b2.Coords[0]) return false;
+    if (b1.Coords[1] == b2.Coords[1]) return false;
+    if (b1.Coords[2] == b2.Coords[2]) return false;
+    return true;
+
+}
+
+void TrocarCurva(int indicePersonagem) 
+{
+    for (int i = 0; i < nCurvas; i++) {
+        if (!isDiferentCurve(Personagens[indicePersonagem].Curva, Curvas[i])) {
+            continue;
+        }
+        int a = -1;
+        if (Personagens[indicePersonagem].Posicao == Curvas[i].Coords[0]) {
+            cout << "peguei curva 1" << endl;
+            a = 0;
+        } else if (Personagens[indicePersonagem].Posicao == Curvas[i].Coords[2]) {
+             cout << "peguei curva 2" << endl;
+            a = 1;
+        }
+
+        if (a >= 0) {
+        AssociaPersonagemComCurva(indicePersonagem,i, a);
+        cout << "cheguei aquiu" << endl;
+        }
+        return;
+    }
+}
+
 // **********************************************************************
 void DesenhaPersonagens(float tempoDecorrido)
 {
-    //cout << "nInstancias: " << nInstancias << endl;
     for (int i = 0; i < nInstancias; i++)
     {
-        if (Personagens[0].Posicao == Personagens[1].Posicao) {
-        }
-        Personagens[i].AtualizaPosicao(tempoDecorrido);
+        TrocarCurva(i);
+        Personagens[i].AtualizaPosicao(0);
         Personagens[i].desenha(); 
-
     }
 }
+
 void DesenhaPoligonoDeControle(int curva)
 {
     Ponto P;

@@ -78,6 +78,7 @@ void InstanciaBZ::desenha()
         
     glPopMatrix();
 }
+
 Ponto InstanciaBZ::ObtemPosicao()
 {
     // aplica as transformacoes geometricas no modelo
@@ -94,7 +95,7 @@ Ponto InstanciaBZ::ObtemPosicao()
     return PosicaoDoPersonagem;
 }
 void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
-{   if (isStopped) return; 
+{
     if (direcao==1)
         tAtual +=0.01;
     else
