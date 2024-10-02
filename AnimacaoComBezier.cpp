@@ -265,23 +265,31 @@ void TrocarCurva(int indicePersonagem)
 {
  
     InstanciaBZ personagem = Personagens[indicePersonagem];
+    Ponto posicao =  personagem.posicao;
+    
+    // se chegou ao final/inicio da curva atual
+    if (personagem.tAtual == 0.0 || personagem.tAtual == 1) {
+        for (int i = 0; i < nCurvas; i ++) {
+            // se nao for a curva que ele ja esta
+            if (i != personagem.nroDaCurva) {
 
+                // se outra curva comeca/termina naquele ponto
+                if (posicao == Curvas[i].Coords[0] || posicao == Curvas[i].Coords[2]) {
+                        AssociaPersonagemComCurva(indicePersonagem, i, 1);
+                        Personagens[indicePersonagem].proxCurva = 0;
+                    
+                } else {
+                    if (Personagens[indicePersonagem].proxCurva != -1) {
+                         cout << "terminei o fluxo" << endl;
+                         AssociaPersonagemComCurva(0, 0, 0);
+                         Personagens[indicePersonagem].proxCurva = -1;
 
- //inicio zerado
-    if (personagem.tAtual == 0.0 && personagem.isIniciando) {
-        cout << "estou INiciando" << endl;
-
-    } else if (personagem.tAtual == 0.0) {
-        cout << "estou de volta ao inicio" << endl;
-        AssociaPersonagemComCurva(0,0,0);
-        personagem.isIniciando = false;
-
-    } else if (personagem.tAtual == 1) {
-        cout << "estou no fim" << endl;
-        AssociaPersonagemComCurva(0, 1,0);
-        personagem.isIniciando = false;
+                    }
+                }
+                
+            }
+        }
     } 
-
 }
 
 // **********************************************************************

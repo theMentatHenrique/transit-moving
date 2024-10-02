@@ -34,7 +34,6 @@ public:
     int cor;
     float Velocidade;
     float tAtual;
-    bool isIniciando;
     int direcao; // andando do fim para o inicio, ou ao contrario
     void desenha();
     void AtualizaPosicao(float tempoDecorrido);
