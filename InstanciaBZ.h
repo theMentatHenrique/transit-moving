@@ -26,7 +26,7 @@ public:
     TipoFuncao *modelo; // Modelo a ser desenhado
 
     Bezier Curva; // referencia para a curva onde esta' a instancia
-    Ponto Posicao, Escala;
+    Ponto posicao, Escala;
     float Rotacao;
 
     int nroDaCurva;
@@ -34,6 +34,7 @@ public:
     int cor;
     float Velocidade;
     float tAtual;
+    bool isIniciando;
     int direcao; // andando do fim para o inicio, ou ao contrario
     void desenha();
     void AtualizaPosicao(float tempoDecorrido);

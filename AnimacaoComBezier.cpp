@@ -155,7 +155,7 @@ void DesenhaFanstasma()
 // **********************************************************************
 void CriaInstancias()
 {
-    Personagens[0].Posicao = Ponto(0, 0);
+    Personagens[0].posicao = Ponto(0, 0);
     Personagens[0].Rotacao = 0;
     defineCor(BlueViolet);
     Personagens[0].cor = Maroon;
@@ -170,7 +170,7 @@ void CriaInstancias()
     Personagens[0].Escala = Ponto(1, 1, 1);
     
     
-    Personagens[1].Posicao = Ponto(5, 5);
+    Personagens[1].posicao = Ponto(5, 5);
     Personagens[1].Rotacao = 0;
     Personagens[1].cor = Gold;
     Personagens[1].modelo = []() {
@@ -263,48 +263,25 @@ bool isDiferentCurve(Bezier b1, Bezier b2)
 
 void TrocarCurva(int indicePersonagem) 
 {
-    int encontreiPonto = 0;
-
-     Ponto posPersonagem; 
+ 
     InstanciaBZ personagem = Personagens[indicePersonagem];
-   
-   if (personagem.tAtual == 1) {
-         posPersonagem = personagem.Posicao; 
-         encontreiPonto = 1;
-   }
-
-        cout << personagem.tAtual << endl;
-   if (personagem.tAtual == 0.0) {
-        encontreiPonto = 2;
-        posPersonagem = personagem.Posicao; 
-    }
-     
-   //cout << "X peronagem= " << Personagens[indicePersonagem].Posicao.x <<" y personagem:"<< Personagens[indicePersonagem].Posicao.y << " com direcao" << Personagens[indicePersonagem].direcao <<"Tatual=" << personagem.tAtual << endl;
 
 
-    if (encontreiPonto) {
-        for (int i = 0; i < nCurvas; i++) {
+ //inicio zerado
+    if (personagem.tAtual == 0.0 && personagem.isIniciando) {
+        cout << "estou INiciando" << endl;
 
-            if (i == personagem.nroDaCurva) {return;}
-           
-            if (posPersonagem == Curvas[i].Coords[0]) {
-                
-                personagem.Posicao = Curvas[i].Coords[0];
-                AssociaPersonagemComCurva(indicePersonagem, i, 1);
-                cout <<"personagem.tAtual:"<< personagem.tAtual << endl;
+    } else if (personagem.tAtual == 0.0) {
+        cout << "estou de volta ao inicio" << endl;
+        AssociaPersonagemComCurva(0,0,0);
+        personagem.isIniciando = false;
 
-            } else if (encontreiPonto == 2){
-                personagem.Posicao = Curvas[i].Coords[2];
-                cout <<"personagem.tAtual:"<< personagem.tAtual << endl;
-                AssociaPersonagemComCurva(indicePersonagem, i, 0);
-                cout <<"personagem.tAtual2:"<< personagem.tAtual << endl;
+    } else if (personagem.tAtual == 1) {
+        cout << "estou no fim" << endl;
+        AssociaPersonagemComCurva(0, 1,0);
+        personagem.isIniciando = false;
+    } 
 
-
-            }
-
-        }    
-
-    }
 }
 
 // **********************************************************************

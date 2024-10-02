@@ -43,25 +43,28 @@ InstanciaBZ::InstanciaBZ()
 {
     
     Rotacao = 0;
-    Posicao = Ponto(0,0,0);
+    posicao = Ponto(0,0,0);
     Escala = Ponto(1,1,1);
     
     nroDaCurva = 0;
     proxCurva = -1;
     tAtual = 0.0;
     direcao = 1;
+    isIniciando = true;
 
 }
 InstanciaBZ::InstanciaBZ(Bezier C)
 {
     
     Rotacao = 0;
-    Posicao = Ponto(0,0,0);
+    posicao = Ponto(0,0,0);
     Escala = Ponto(1,1,1);
     
     Curva = C;
     tAtual = 0;
     direcao = 1;
+    isIniciando = true;
+
 }
 
 void InstanciaBZ::desenha()
@@ -70,7 +73,7 @@ void InstanciaBZ::desenha()
     // cout << endl;
     // Aplica as transformacoes geometricas no modelo
     glPushMatrix();
-        glTranslatef(Posicao.x, Posicao.y, 0);
+        glTranslatef(posicao.x, posicao.y, 0);
         glRotatef(Rotacao, 0, 0, 1);
         glScalef(Escala.x, Escala.y, Escala.z);
         
@@ -85,7 +88,7 @@ Ponto InstanciaBZ::ObtemPosicao()
     // desenha a geometria do objeto
     
     glPushMatrix();
-        glTranslatef(Posicao.x, Posicao.y, 0);
+        glTranslatef(posicao.x, posicao.y, 0);
         glRotatef(Rotacao, 0, 0, 1);
         Ponto PosicaoDoPersonagem;
         Ponto Origem (0,0,0);
@@ -104,7 +107,7 @@ void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
     if(tAtual > 1)
     {
         tAtual = 1.0;
-        direcao = -1;
+        //direcao = -1;
     }
     if (tAtual < 0.0)
     {
@@ -114,6 +117,6 @@ void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
 
     Ponto P = Curva.Calcula(tAtual);
     
-    Posicao = P;
+    posicao = P;
 }
 
