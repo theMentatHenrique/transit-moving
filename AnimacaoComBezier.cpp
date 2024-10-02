@@ -85,9 +85,9 @@ void animate()
     }
     if (TempoTotal > 5.0)
     {
-        cout << "Tempo Acumulado: " << TempoTotal << " segundos. ";
+   /*      cout << "Tempo Acumulado: " << TempoTotal << " segundos. ";
         cout << "Nros de Frames sem desenho: " << nFrames << endl;
-        cout << "FPS(sem desenho): " << nFrames / TempoTotal << endl;
+        cout << "FPS(sem desenho): " << nFrames / TempoTotal << endl; */
         TempoTotal = 0;
         nFrames = 0;
     }
@@ -221,6 +221,7 @@ void CriaCurvas()
 void AssociaPersonagemComCurva(int p, int c, int direcao)
 {
     Personagens[p].Curva = Curvas[c];
+    Personagens[p].nroDaCurva = c;
     Personagens[p].tAtual = 0.0;
     Personagens[p].direcao = direcao;
     
@@ -242,7 +243,7 @@ void init()
     // carrega as curvas que farao parte do cenario
     CriaCurvas();
     
-    AssociaPersonagemComCurva(0, 1,1);
+    AssociaPersonagemComCurva(0, 0,1);
     //AssociaPersonagemComCurva(1, 1);
 
     // define is limites da área de desenho
@@ -262,24 +263,45 @@ bool isDiferentCurve(Bezier b1, Bezier b2)
 
 void TrocarCurva(int indicePersonagem) 
 {
-    for (int i = 0; i < nCurvas; i++) {
-        if (!isDiferentCurve(Personagens[indicePersonagem].Curva, Curvas[i])) {
-            continue;
-        }
-        int a = -1;
-        if (Personagens[indicePersonagem].Posicao == Curvas[i].Coords[0]) {
-            cout << "peguei curva 1" << endl;
-            a = 0;
-        } else if (Personagens[indicePersonagem].Posicao == Curvas[i].Coords[2]) {
-             cout << "peguei curva 2" << endl;
-            a = 1;
-        }
+    int encontreiPonto = 0;
 
-        if (a >= 0) {
-        AssociaPersonagemComCurva(indicePersonagem,i, a);
-        cout << "cheguei aquiu" << endl;
-        }
-        return;
+     Ponto posPersonagem; 
+    InstanciaBZ personagem = Personagens[indicePersonagem];
+   
+   if (personagem.tAtual == 1) {
+         posPersonagem = personagem.Posicao; 
+        cout << "personagem.tAtual == 1" << endl;
+         encontreiPonto = 1;
+   }
+
+   if (personagem.tAtual < 0.0) {
+        encontreiPonto = 1;
+        posPersonagem = personagem.Posicao; 
+        cout << "personagem.tAtual < 0.0" << endl;
+    }
+     
+   //cout << "X peronagem= " << Personagens[indicePersonagem].Posicao.x <<" y personagem:"<< Personagens[indicePersonagem].Posicao.y << " com direcao" << Personagens[indicePersonagem].direcao <<"Tatual=" << personagem.tAtual << endl;
+
+
+    if (encontreiPonto) {
+        for (int i = 0; i < nCurvas; i++) {
+
+            if (i == personagem.nroDaCurva) {continue;}
+           
+            if (posPersonagem == Curvas[i].Coords[0]) {
+                
+                AssociaPersonagemComCurva(indicePersonagem, i, 1);
+                cout << "HP:na curva1IF:"<< Personagens->nroDaCurva << endl;
+                personagem.Posicao = Curvas[i].Coords[0];
+
+            } else {
+                AssociaPersonagemComCurva(indicePersonagem, i, 1);
+                personagem.Posicao = Curvas[i].Coords[1];
+
+            }
+
+        }    
+
     }
 }
 
@@ -289,7 +311,7 @@ void DesenhaPersonagens(float tempoDecorrido)
     for (int i = 0; i < nInstancias; i++)
     {
         TrocarCurva(i);
-        Personagens[i].AtualizaPosicao(0);
+        Personagens[i].AtualizaPosicao(tempoDecorrido);
         Personagens[i].desenha(); 
     }
 }

@@ -108,7 +108,7 @@ void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
     }
     if (tAtual < 0.0)
     {
-        tAtual = 0.0;
+        // tAtual = 0.0;
         direcao = 1;
     }
 
