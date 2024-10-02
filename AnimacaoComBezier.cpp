@@ -270,14 +270,13 @@ void TrocarCurva(int indicePersonagem)
    
    if (personagem.tAtual == 1) {
          posPersonagem = personagem.Posicao; 
-        cout << "personagem.tAtual == 1" << endl;
          encontreiPonto = 1;
    }
 
-   if (personagem.tAtual < 0.0) {
-        encontreiPonto = 1;
+        cout << personagem.tAtual << endl;
+   if (personagem.tAtual == 0.0) {
+        encontreiPonto = 2;
         posPersonagem = personagem.Posicao; 
-        cout << "personagem.tAtual < 0.0" << endl;
     }
      
    //cout << "X peronagem= " << Personagens[indicePersonagem].Posicao.x <<" y personagem:"<< Personagens[indicePersonagem].Posicao.y << " com direcao" << Personagens[indicePersonagem].direcao <<"Tatual=" << personagem.tAtual << endl;
@@ -286,17 +285,20 @@ void TrocarCurva(int indicePersonagem)
     if (encontreiPonto) {
         for (int i = 0; i < nCurvas; i++) {
 
-            if (i == personagem.nroDaCurva) {continue;}
+            if (i == personagem.nroDaCurva) {return;}
            
             if (posPersonagem == Curvas[i].Coords[0]) {
                 
-                AssociaPersonagemComCurva(indicePersonagem, i, 1);
-                cout << "HP:na curva1IF:"<< Personagens->nroDaCurva << endl;
                 personagem.Posicao = Curvas[i].Coords[0];
-
-            } else {
                 AssociaPersonagemComCurva(indicePersonagem, i, 1);
-                personagem.Posicao = Curvas[i].Coords[1];
+                cout <<"personagem.tAtual:"<< personagem.tAtual << endl;
+
+            } else if (encontreiPonto == 2){
+                personagem.Posicao = Curvas[i].Coords[2];
+                cout <<"personagem.tAtual:"<< personagem.tAtual << endl;
+                AssociaPersonagemComCurva(indicePersonagem, i, 0);
+                cout <<"personagem.tAtual2:"<< personagem.tAtual << endl;
+
 
             }
 
