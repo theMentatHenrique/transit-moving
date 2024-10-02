@@ -281,8 +281,8 @@ void TrocarCurva(int indicePersonagem)
                 } else {
                     if (Personagens[indicePersonagem].proxCurva != -1) {
                          cout << "terminei o fluxo" << endl;
-                         AssociaPersonagemComCurva(0, 0, 0);
                          Personagens[indicePersonagem].proxCurva = -1;
+                         Personagens[indicePersonagem].direcao = -1;
 
                     }
                 }
