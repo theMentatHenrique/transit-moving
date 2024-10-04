@@ -211,9 +211,11 @@ void CriaCurvas()
     //Curvas[0] = Bezier(Ponto(-5, -5), Ponto(0, 6), Ponto(5, -5));
     //Curvas[1] = Bezier(Ponto(5, -5), Ponto(15, 0), Ponto(12, 12));
     Curvas[0] = Bezier(Ponto(-10, -5), Ponto(-15, 15), Ponto(12, 12));
-    Curvas[1] = Bezier(Ponto(12, 12), Ponto(15, -15), Ponto(-12, -12));
+    Curvas[1] = Bezier(Ponto(-12, -12), Ponto(15, -15), Ponto(12, 12));
+    Curvas[2] = Bezier(Ponto(-6, 14), Ponto(-20, 10), Ponto(-10, -5));
 
-    nCurvas = 2;
+
+    nCurvas = 3;
 }
 // **********************************************************************
 //
@@ -270,6 +272,7 @@ void TrocarCurva(int indicePersonagem)
     Ponto posicao =  personagem.posicao;
     
     // se chegou ao final/inicio da curva atual
+
     if (personagem.tAtual == 0.0 || personagem.tAtual == 1) {
         for (int i = 0; i < nCurvas; i ++) {
             // se nao for a curva que ele ja esta
@@ -404,6 +407,13 @@ void keyboard(unsigned char key, int x, int y)
     case ' ':
         desenha = !desenha;
         break;
+    case 's':
+        Personagens[0].direcao = -1;
+        break;
+    case 'w':
+        Personagens[0].direcao = 1;
+        break;
+    
     default:
         break;
     }
