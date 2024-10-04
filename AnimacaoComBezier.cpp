@@ -218,12 +218,12 @@ void CriaCurvas()
 // **********************************************************************
 //
 // **********************************************************************
-void AssociaPersonagemComCurva(int p, int c, int direcao)
+void AssociaPersonagemComCurva(int p, int c, bool isInicio)
 {
     Personagens[p].Curva = Curvas[c];
     Personagens[p].nroDaCurva = c;
-    Personagens[p].tAtual = 0.0;
-    Personagens[p].direcao = direcao;
+    Personagens[p].tAtual = isInicio ? 0.0 : 1;
+    Personagens[p].direcao = isInicio ? 1 : -1;
     
 }
 // **********************************************************************
@@ -264,6 +264,8 @@ bool isDiferentCurve(Bezier b1, Bezier b2)
 void TrocarCurva(int indicePersonagem) 
 {
  
+
+ 
     InstanciaBZ personagem = Personagens[indicePersonagem];
     Ponto posicao =  personagem.posicao;
     
@@ -275,19 +277,22 @@ void TrocarCurva(int indicePersonagem)
 
                 // se outra curva comeca/termina naquele ponto
                 if (posicao == Curvas[i].Coords[0] || posicao == Curvas[i].Coords[2]) {
-                        AssociaPersonagemComCurva(indicePersonagem, i, 1);
-                        Personagens[indicePersonagem].proxCurva = 0;
-                    
-                } else {
-                    if (Personagens[indicePersonagem].proxCurva != -1) {
-                         cout << "terminei o fluxo" << endl;
-                         Personagens[indicePersonagem].proxCurva = -1;
-                         Personagens[indicePersonagem].direcao = -1;
-
-                    }
+                       bool isInicio = false;
+                       isInicio = posicao == Curvas[i].Coords[0];
+                       AssociaPersonagemComCurva(indicePersonagem, i, isInicio);
+                       Personagens[indicePersonagem].proxCurva = 1;
+                       return;
                 }
-                
-            }
+            } 
+        }
+        if (Personagens[indicePersonagem].proxCurva != -1) {
+            Personagens[indicePersonagem].direcao = -1;
+        } else {
+            cout << "cheguei no else" << endl;
+            Personagens[indicePersonagem].proxCurva = -1;
+            Personagens[indicePersonagem].direcao = 1;
+            Personagens[indicePersonagem].tAtual = 0;
+
         }
     } 
 }
