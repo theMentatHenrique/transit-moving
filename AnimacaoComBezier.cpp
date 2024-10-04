@@ -285,13 +285,10 @@ void TrocarCurva(int indicePersonagem)
                 }
             } 
         }
-        if (Personagens[indicePersonagem].proxCurva != -1) {
-            Personagens[indicePersonagem].direcao = -1;
-        } else {
-            cout << "cheguei no else" << endl;
-            Personagens[indicePersonagem].proxCurva = -1;
+        if (Personagens[indicePersonagem].tAtual == 0) {
             Personagens[indicePersonagem].direcao = 1;
-            Personagens[indicePersonagem].tAtual = 0;
+        } else {
+            Personagens[indicePersonagem].direcao = -1;
 
         }
     } 
