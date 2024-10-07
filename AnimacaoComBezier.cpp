@@ -232,7 +232,12 @@ void init()
 }
 
 void trocarCurva(int indicePersonagem) 
-{
+{   srand(time(NULL));
+
+    int curvasEncontradas[20];
+    bool curvaInicio[20];
+
+    int nCurvasEncontradas = 0;
     if (Personagens[indicePersonagem].proxCurva == -1) {
         Personagens[indicePersonagem].proxCurva = Personagens[indicePersonagem].nroDaCurva;
     }
@@ -250,12 +255,20 @@ void trocarCurva(int indicePersonagem)
                 if (posicao == Curvas[i].Coords[0] || posicao == Curvas[i].Coords[2]) {
                        bool isInicio = false;
                        isInicio = posicao == Curvas[i].Coords[0];
-                       AssociaPersonagemComCurva(indicePersonagem, i, isInicio);
-                       return;
+                       curvasEncontradas[nCurvasEncontradas] = i;
+                       curvaInicio[nCurvasEncontradas] = isInicio;
+                       nCurvasEncontradas++;
+                       //AssociaPersonagemComCurva(indicePersonagem, i, isInicio);
+                       //return;
                 }
             } 
         }
-        if (Personagens[indicePersonagem].tAtual == 0) {
+        if (nCurvasEncontradas) {
+            int numRand = rand() % nCurvasEncontradas;
+
+            AssociaPersonagemComCurva(indicePersonagem, curvasEncontradas[numRand], curvaInicio[numRand]);
+
+        } else if (Personagens[indicePersonagem].tAtual == 0) {
             Personagens[indicePersonagem].direcao = 1;
         } else {
             Personagens[indicePersonagem].direcao = -1;
