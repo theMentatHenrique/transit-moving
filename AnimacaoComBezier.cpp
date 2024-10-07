@@ -17,6 +17,8 @@
 #include <cmath>
 #include <ctime>
 #include <fstream>
+#include <string>
+
 
 using namespace std;
 
@@ -63,6 +65,7 @@ float angulo = 0.0;
 
 double nFrames = 0;
 double TempoTotal = 0;
+char teclaDigitada = 'w';
 
 
 // **********************************************************************
@@ -409,10 +412,18 @@ void keyboard(unsigned char key, int x, int y)
         desenha = !desenha;
         break;
     case 's':
-        Personagens[0].direcao = -1;
+        if (teclaDigitada != 's') {
+           Personagens[0].direcao *= -1;
+           teclaDigitada = 's';
+           Personagens[0].Rotacao+=180;
+        }  
         break;
     case 'w':
-        Personagens[0].direcao = 1;
+        if (teclaDigitada != 'w') {
+        Personagens[0].direcao *= -1;
+        teclaDigitada = 'w';
+        Personagens[0].Rotacao+=180;
+        }
         break;
     
     default:
