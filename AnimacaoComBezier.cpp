@@ -148,14 +148,7 @@ void DesenhaTriangulo()
         glVertex2f(2,-2);
     glEnd();
 }
-
-void DesenhaFanstasma()
-{
-    
-}
-// **********************************************************************
-// Esta funcao deve instanciar todos os personagens do cenario
-// **********************************************************************
+ 
 void CriaInstancias()
 {
     Personagens[0].posicao = Ponto(0, 0);
@@ -194,10 +187,13 @@ void CriaInstancias()
 // **********************************************************************
 void CarregaModelos()
 {
-    Mapa.LePoligono("EstadoRS.txt");
-    
+    nCurvas = Mapa.obterCurvas("example1.txt", Curvas);
 
     Ponto A, B;
+    A.x = -5;
+    A.y = 10;
+    B.x = 5;
+    B.y = 10;
     Mapa.obtemLimites(A,B);
     cout << "Limites do Mapa" << endl;
     A.imprime();
@@ -205,17 +201,7 @@ void CarregaModelos()
     B.imprime();
     cout << endl;
 }
-// **********************************************************************
-//  Este metodo deve ser alterado para ler as curvas de um arquivo texto
-// **********************************************************************
-void CriaCurvas()
-{
-    nCurvas = Mapa.obterCurvas("example1.txt", Curvas);
 
-}
-// **********************************************************************
-//
-// **********************************************************************
 void AssociaPersonagemComCurva(int p, int c, bool isInicio)
 {
     Personagens[p].Curva = Curvas[c];
@@ -238,25 +224,14 @@ void init()
     // cria instancias do modelos
     CriaInstancias();
 
-    // carrega as curvas que farao parte do cenario
-    CriaCurvas();
     
     AssociaPersonagemComCurva(0, 0,1);
     //AssociaPersonagemComCurva(1, 1);
 
     // define is limites da área de desenho
-    float d = 15;
+    float d = 5;
     Min = Ponto(-d, -d);
     Max = Ponto(d, d);
-}
-
-bool isDiferentCurve(Bezier b1, Bezier b2)
-{
-    if (b1.Coords[0] == b2.Coords[0]) return false;
-    if (b1.Coords[1] == b2.Coords[1]) return false;
-    if (b1.Coords[2] == b2.Coords[2]) return false;
-    return true;
-
 }
 
 void TrocarCurva(int indicePersonagem) 

@@ -136,6 +136,8 @@ ifstream input;
         if(!input)
             break;
 
+        insereVertice(pontos[i]);
+
     }
     input.close();
 
