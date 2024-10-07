@@ -112,6 +112,59 @@ void Poligono::LePoligono(const char *nome)
 
 }
 
+int Poligono :: obterCurvas(const char *nome, Bezier curvas[]) {
+ifstream input;           
+    input.open(nome, ios::in); 
+    if (!input)
+    {
+        cout << "Erro ao abrir " << nome << ". " << endl;
+        exit(0);
+    }
+    cout << "Lendo arquivo " << nome << "...";
+    string S;
+    unsigned int qtdPontos;
+    
+    input >> qtdPontos; 
+    Ponto pontos[qtdPontos];
+    for (int i=0; i< qtdPontos; i++)
+    {
+        double x,y;
+        input >> x >> y; 
+
+        pontos[i].x = x;
+        pontos[i].y = y;
+        if(!input)
+            break;
+
+    }
+    input.close();
+
+
+    input.open("example1-curves.txt", ios::in); //arq.open(nome, ios::out);
+    if (!input)
+    {
+        cout << "Erro ao ler example1-curves.txt" << nome << ". " << endl;
+        exit(0);
+    }
+    cout << "Lendo arquivo " << nome << "...";
+    //int nLinha = 0;
+    unsigned int qtdCurvas;
+    
+    input >> qtdCurvas; 
+    for (int i= 0; i< qtdCurvas; i++)
+    {
+        char a,b, c;
+        input >> a >>  b >> c; 
+        curvas[i] = Bezier(pontos[a -'0'], pontos[b -'0'], pontos[c -'0']);
+        if(!input)
+            break;
+
+    } 
+    
+    return qtdCurvas;
+
+}
+
 void Poligono::getAresta(int n, Ponto &P1, Ponto &P2)
 {
     P1 = Vertices[n];

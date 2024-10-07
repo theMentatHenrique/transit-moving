@@ -195,9 +195,8 @@ void CriaInstancias()
 void CarregaModelos()
 {
     Mapa.LePoligono("EstadoRS.txt");
-    MeiaSeta.LePoligono("MeiaSeta.txt");
-    Mastro.LePoligono("Mastro.txt");
     
+
     Ponto A, B;
     Mapa.obtemLimites(A,B);
     cout << "Limites do Mapa" << endl;
@@ -211,14 +210,8 @@ void CarregaModelos()
 // **********************************************************************
 void CriaCurvas()
 {
-    //Curvas[0] = Bezier(Ponto(-5, -5), Ponto(0, 6), Ponto(5, -5));
-    //Curvas[1] = Bezier(Ponto(5, -5), Ponto(15, 0), Ponto(12, 12));
-    Curvas[0] = Bezier(Ponto(-10, -5), Ponto(-15, 15), Ponto(12, 12));
-    Curvas[1] = Bezier(Ponto(-12, -12), Ponto(15, -15), Ponto(12, 12));
-    Curvas[2] = Bezier(Ponto(-6, 14), Ponto(-20, 10), Ponto(-10, -5));
+    nCurvas = Mapa.obterCurvas("example1.txt", Curvas);
 
-
-    nCurvas = 3;
 }
 // **********************************************************************
 //
@@ -360,7 +353,7 @@ void display(void)
     DesenhaCurvas();
     
     // Desenha os personagens no tempo T2.getDeltaT()
-    DesenhaPersonagens(T2.getDeltaT());
+    //DesenhaPersonagens(T2.getDeltaT());
 
     glutSwapBuffers();
 }
