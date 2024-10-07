@@ -265,9 +265,9 @@ bool isDiferentCurve(Bezier b1, Bezier b2)
 
 void TrocarCurva(int indicePersonagem) 
 {
- 
-
- 
+    if (Personagens[indicePersonagem].proxCurva == -1) {
+        Personagens[indicePersonagem].proxCurva = Personagens[indicePersonagem].nroDaCurva;
+    }
     InstanciaBZ personagem = Personagens[indicePersonagem];
     Ponto posicao =  personagem.posicao;
     
@@ -283,7 +283,6 @@ void TrocarCurva(int indicePersonagem)
                        bool isInicio = false;
                        isInicio = posicao == Curvas[i].Coords[0];
                        AssociaPersonagemComCurva(indicePersonagem, i, isInicio);
-                       Personagens[indicePersonagem].proxCurva = 1;
                        return;
                 }
             } 
@@ -405,6 +404,8 @@ void keyboard(unsigned char key, int x, int y)
         ContaTempo(3);
         break;
     case ' ':
+        Personagens[0].tAtual= 0.0;
+        AssociaPersonagemComCurva(0, Personagens[0].proxCurva, 1);
         desenha = !desenha;
         break;
     case 's':
@@ -436,6 +437,8 @@ void arrow_keys(int a_keys, int x, int y)
         break;
     case GLUT_KEY_DOWN: // Se pressionar UP
                         // Reposiciona a janela
+
+
         glutPositionWindow(50, 50);
         glutReshapeWindow(700, 500);
         break;
