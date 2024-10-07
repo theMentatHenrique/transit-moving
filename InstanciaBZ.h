@@ -15,7 +15,7 @@ using namespace std;
 #include "Bezier.h"
 #include "ListaDeCoresRGB.h"
 
-typedef void TipoFuncao();
+typedef void TipoFuncao(int num);
 
 class InstanciaBZ{
 

@@ -148,31 +148,16 @@ void DesenhaTriangulo()
         glVertex2f(0.2,-0.2);
     glEnd();
 }
- 
-void CriaInstancias()
-{
-    Personagens[0].posicao = Ponto(0, 0);
-    Personagens[0].Rotacao = 0;
-    Personagens[0].cor = Maroon;
-    Personagens[0].modelo = []() {
-        defineCor(BlueViolet);
-        DesenhaTriangulo();
-        };
-    Personagens[0].Escala = Ponto(1, 1, 1);
-    
-    
-    Personagens[1].posicao = Ponto(5, 5);
-    Personagens[1].Rotacao = 0;
-    Personagens[1].cor = Gold;
-    Personagens[1].modelo = []() {
-        defineCor(Gold);
-        DesenhaTriangulo();
-    };;
-    Personagens[1].Escala = Ponto(1, 1, 1);
-    
-    nInstancias = 2;
 
+void AssociaPersonagemComCurva(int p, int c, bool isInicio)
+{
+    Personagens[p].Curva = Curvas[c];
+    Personagens[p].nroDaCurva = c;
+    Personagens[p].tAtual = isInicio ? 0.0 : 1;
+    Personagens[p].direcao = isInicio ? 1 : -1;
+    
 }
+ 
 // **********************************************************************
 //  Carrega os modelos que poderão representar os personagens
 // **********************************************************************
@@ -193,17 +178,41 @@ void CarregaModelos()
     cout << endl;
 }
 
-void AssociaPersonagemComCurva(int p, int c, bool isInicio)
-{
-    Personagens[p].Curva = Curvas[c];
-    Personagens[p].nroDaCurva = c;
-    Personagens[p].tAtual = isInicio ? 0.0 : 1;
-    Personagens[p].direcao = isInicio ? 1 : -1;
-    
+void atribuirPersonagensCurvas() {  
+    nInstancias = 10;  
+    srand(time(NULL));
+    for (int i = 0; i < nInstancias; i++) {
+
+
+        int numeroRand = rand() % (11);
+        if (i == 0) {
+            Personagens[0].cor = Gold;
+            Personagens[0].modelo = [](int numeroRand) {
+               defineCor(numeroRand);
+               DesenhaTriangulo();
+            };
+            AssociaPersonagemComCurva(0, 0, 1);
+        } else {
+
+                
+            Personagens[i].cor = numeroRand + 10 * i/2;
+            Personagens[i].modelo = [](int numeroRand) {
+            defineCor(numeroRand);
+            DesenhaTriangulo();
+            };
+
+            AssociaPersonagemComCurva(i, numeroRand, 1);
+            Personagens[i].tAtual = 0.5;
+            Personagens[i].AtualizaPosicao(Personagens[i].tAtual);
+            if (i > 5) {
+                Personagens[i].direcao = -1;
+            } else {
+                Personagens[i].direcao = 1;
+            }
+        }
+    } 
+
 }
-// **********************************************************************
-//
-// **********************************************************************
 void init()
 {
     // Define a cor do fundo da tela (AZUL)
@@ -212,12 +221,9 @@ void init()
     // carrega os modelos armazenados em arquivos
     CarregaModelos();
     
-    // cria instancias do modelos
-    CriaInstancias();
-
     
-    AssociaPersonagemComCurva(0, 0,1);
-    //AssociaPersonagemComCurva(1, 1);
+    atribuirPersonagensCurvas();
+   
 
     // define is limites da área de desenho
     float d = 5;
@@ -225,7 +231,7 @@ void init()
     Max = Ponto(d, d);
 }
 
-void TrocarCurva(int indicePersonagem) 
+void trocarCurva(int indicePersonagem) 
 {
     if (Personagens[indicePersonagem].proxCurva == -1) {
         Personagens[indicePersonagem].proxCurva = Personagens[indicePersonagem].nroDaCurva;
@@ -263,7 +269,7 @@ void DesenhaPersonagens(float tempoDecorrido)
 {
     for (int i = 0; i < nInstancias; i++)
     {
-        TrocarCurva(i);
+        trocarCurva(i);
         Personagens[i].AtualizaPosicao(tempoDecorrido);
         Personagens[i].desenha(); 
     }

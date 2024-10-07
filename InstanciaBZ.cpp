@@ -75,7 +75,7 @@ void InstanciaBZ::desenha()
         glRotatef(Rotacao, 0, 0, 1);
         glScalef(Escala.x, Escala.y, Escala.z);
         
-        (*modelo)(); // desenha a instancia
+        (*modelo)(cor); // desenha a instancia
         
     glPopMatrix();
 }
