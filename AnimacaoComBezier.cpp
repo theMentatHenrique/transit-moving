@@ -143,9 +143,9 @@ void DesenhaPersonagem()
 void DesenhaTriangulo()
 {
     glBegin(GL_TRIANGLES);
-        glVertex2f(-2,-2);
-        glVertex2f(0, 2);
-        glVertex2f(2,-2);
+       glVertex2f(-0.2,-0.2);
+        glVertex2f(0, 0.2);
+        glVertex2f(0.2,-0.2);
     glEnd();
 }
  
@@ -153,16 +153,11 @@ void CriaInstancias()
 {
     Personagens[0].posicao = Ponto(0, 0);
     Personagens[0].Rotacao = 0;
-    defineCor(BlueViolet);
     Personagens[0].cor = Maroon;
     Personagens[0].modelo = []() {
-        defineCor(Personagens[0].cor);
-        glBegin(GL_TRIANGLES);
-        glVertex2f(-2,-2);
-        glVertex2f(0, 2);
-        glVertex2f(2,-2);
-        glEnd();
-    };
+        defineCor(BlueViolet);
+        DesenhaTriangulo();
+        };
     Personagens[0].Escala = Ponto(1, 1, 1);
     
     
@@ -170,16 +165,12 @@ void CriaInstancias()
     Personagens[1].Rotacao = 0;
     Personagens[1].cor = Gold;
     Personagens[1].modelo = []() {
-        defineCor(Personagens[1].cor);
-        glBegin(GL_TRIANGLES);
-        glVertex2f(-2,-2);
-        glVertex2f(0, 2);
-        glVertex2f(2,-2);
-        glEnd();
+        defineCor(Gold);
+        DesenhaTriangulo();
     };;
     Personagens[1].Escala = Ponto(1, 1, 1);
     
-    nInstancias = 1;
+    nInstancias = 2;
 
 }
 // **********************************************************************
@@ -328,7 +319,7 @@ void display(void)
     DesenhaCurvas();
     
     // Desenha os personagens no tempo T2.getDeltaT()
-    //DesenhaPersonagens(T2.getDeltaT());
+    DesenhaPersonagens(T2.getDeltaT());
 
     glutSwapBuffers();
 }
@@ -439,7 +430,7 @@ int main(int argc, char **argv)
     glutInitWindowPosition(0, 0);
 
     // Define o tamanho inicial da janela grafica do programa
-    glutInitWindowSize(650, 500);
+    glutInitWindowSize(1920, 1080);
 
     // Cria a janela na tela, definindo o nome da
     // que aparecera na barra de t�tulo da janela.
