@@ -151,11 +151,17 @@ ifstream input;
     unsigned int qtdCurvas;
     
     input >> qtdCurvas; 
+    srand(time(NULL));
     for (int i= 0; i< qtdCurvas; i++)
     {
         char a,b, c;
         input >> a >>  b >> c; 
         curvas[i] = Bezier(pontos[a -'0'], pontos[b -'0'], pontos[c -'0']);
+
+
+        // Gera um número randômico entre 0 e 95
+        int numero = rand() % 96;
+        curvas[i].cor = numero;
         if(!input)
             break;
 

@@ -126,5 +126,6 @@ enum {
 
 
 void defineCor(int c);
+void getCor(int c);
 
 #endif

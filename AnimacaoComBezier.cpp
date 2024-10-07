@@ -321,7 +321,7 @@ void DesenhaCurvas()
 {
     for (int i = 0; i < nCurvas; i++)
     {
-        defineCor(Personagens[i].cor);
+        defineCor(Curvas[i].cor);
         glLineWidth(4);
         Curvas[i].Traca();
      
