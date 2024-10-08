@@ -98,8 +98,13 @@ Ponto InstanciaBZ::ObtemPosicao()
     glPopMatrix();
     return PosicaoDoPersonagem;
 }
-void InstanciaBZ::AtualizaPosicao(float deltaT)
+void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
 {
+    Curva.calculaComprimentoDaCurva();
+    float compCurva = Curva.ComprimentoTotalDaCurva;
+    float deslocamento = 2 * tempoDecorrido;
+    float deltaT = deslocamento/compCurva;
+
     if (direcao==1)
         tAtual +=deltaT;
     else

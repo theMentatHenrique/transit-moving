@@ -292,8 +292,8 @@ void DesenhaPersonagens(float tempoDecorrido)
     {
         trocarCurva(i);
         Personagens[i].Curva.calculaComprimentoDaCurva();
-        Personagens[i].Velocidade = Personagens[i].Curva.CalculaT(100 * (T.getDeltaT() * 100));
-        Personagens[i].AtualizaPosicao(Personagens[i].Velocidade);        
+        cout << Personagens[i].tAtual << endl;
+        Personagens[i].AtualizaPosicao(tempoDecorrido);        
         Personagens[i].desenha(); 
         if (i != 0) {
             if (validaColisao(i) && colidiu == -1) {
