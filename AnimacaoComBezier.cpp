@@ -292,7 +292,6 @@ void DesenhaPersonagens(float tempoDecorrido)
     {
         trocarCurva(i);
         Personagens[i].Curva.calculaComprimentoDaCurva();
-        cout << Personagens[i].tAtual << endl;
         Personagens[i].AtualizaPosicao(tempoDecorrido);        
         Personagens[i].desenha(); 
         if (i != 0) {
