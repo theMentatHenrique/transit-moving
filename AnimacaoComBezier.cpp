@@ -232,9 +232,6 @@ void init()
     Max = Ponto(d, d);
 }
 
-bool isColisao() {
-
-}
 void trocarCurva(int indicePersonagem) 
 {   
     // curvas que podem ser novos caminhos
@@ -286,7 +283,7 @@ bool validaColisao(int indiceColisor) {
     // arredonda para considerar pontas do triangulo
     p.x = round(p.x);
     p.y = round(p.y);
-    return p.x == 0 && p.y == 0;
+    return p.x > 0.01 && p.y > 0.01;
 }
 
 // **********************************************************************
