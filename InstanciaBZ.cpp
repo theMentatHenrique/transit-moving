@@ -95,12 +95,12 @@ Ponto InstanciaBZ::ObtemPosicao()
     glPopMatrix();
     return PosicaoDoPersonagem;
 }
-void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
+void InstanciaBZ::AtualizaPosicao(float deltaT)
 {
     if (direcao==1)
-        tAtual +=0.01;
+        tAtual +=deltaT;
     else
-        tAtual -=0.01;
+        tAtual -=deltaT;
     
     if(tAtual > 1)
     {

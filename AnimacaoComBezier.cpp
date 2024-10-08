@@ -204,7 +204,7 @@ void desenharPersonagens() {
 
             AssociaPersonagemComCurva(i, numeroRand, 1);
             Personagens[i].tAtual = 0.5;
-            Personagens[i].AtualizaPosicao(Personagens[i].tAtual);
+            Personagens[i].AtualizaPosicao(Personagens[i].Curva.CalculaT(Personagens[i].tAtual * 100));
             if (i > 5) {
                 Personagens[i].direcao = -1;
             } else {
@@ -283,7 +283,7 @@ bool validaColisao(int indiceColisor) {
     // arredonda para considerar pontas do triangulo
     p.x = round(p.x);
     p.y = round(p.y);
-    return p.x > 0.01 && p.y > 0.01;
+    return p.x == 0 && p.y == 0;
 }
 
 // **********************************************************************
@@ -296,10 +296,11 @@ void DesenhaPersonagens(float tempoDecorrido)
         Personagens[i].desenha(); 
         if (i != 0) {
             if (validaColisao(i) && colidiu == -1) {
-                cout << "colidiu com =" << i << endl;
+                cout << "colidiu com o personagem numero " << i << endl;
                 colidiu = 1;
             }
         }
+
     }
 }
 
