@@ -59,7 +59,7 @@ Ponto Min, Max;
 bool desenha = false;
 
 Poligono Mapa, MeiaSeta, Mastro;
-int nInstancias = 0;
+int nInstancias = 10;
 
 float angulo = 0.0;
 
@@ -166,10 +166,6 @@ void CarregaModelos()
     nCurvas = Mapa.obterCurvas("example1.txt", Curvas);
 
     Ponto A, B;
-    A.x = -5;
-    A.y = 10;
-    B.x = 5;
-    B.y = 10;
     Mapa.obtemLimites(A,B);
     cout << "Limites do Mapa" << endl;
     A.imprime();
@@ -179,8 +175,6 @@ void CarregaModelos()
 }
 
 void atribuirPersonagensCurvas() {  
-    nInstancias = 10;  
-    srand(time(NULL));
     for (int i = 0; i < nInstancias; i++) {
 
 
@@ -232,8 +226,7 @@ void init()
 }
 
 void trocarCurva(int indicePersonagem) 
-{   srand(time(NULL));
-
+{   
     int curvasEncontradas[20];
     bool curvaInicio[20];
 
@@ -442,6 +435,7 @@ void arrow_keys(int a_keys, int x, int y)
 // **********************************************************************
 int main(int argc, char **argv)
 {
+    srand(time(0));
     cout << "Programa OpenGL" << endl;
 
     glutInit(&argc, argv);
