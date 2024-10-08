@@ -70,6 +70,8 @@ Ponto Bezier::Calcula(double t)
 // **********************************************************************
 double Bezier::CalculaT(double distanciaPercorrida)
 {
+    double teste =(distanciaPercorrida/ComprimentoTotalDaCurva);
+    cout << "dis = " << distanciaPercorrida << "comp =" <<  ComprimentoTotalDaCurva << "divisao=" <<  teste << endl;
     return (distanciaPercorrida/ComprimentoTotalDaCurva);
 }
 // **********************************************************************

@@ -50,6 +50,7 @@ InstanciaBZ::InstanciaBZ()
     curvaInicial = -1;
     tAtual = 0.0;
     direcao = 1;
+    Velocidade = 1000;
 
 }
 InstanciaBZ::InstanciaBZ(Bezier C)
@@ -62,6 +63,8 @@ InstanciaBZ::InstanciaBZ(Bezier C)
     Curva = C;
     tAtual = 0;
     direcao = 1;
+    Velocidade = 1000;
+
 
 }
 

@@ -157,7 +157,7 @@ void AssociaPersonagemComCurva(int p, int c, bool isInicio)
     Personagens[p].nroDaCurva = c;
     Personagens[p].tAtual = isInicio ? 0.0 : 1;
     Personagens[p].direcao = isInicio ? 1 : -1;
-    
+
 }
  
 // **********************************************************************
@@ -204,7 +204,6 @@ void desenharPersonagens() {
 
             AssociaPersonagemComCurva(i, numeroRand, 1);
             Personagens[i].tAtual = 0.5;
-            Personagens[i].AtualizaPosicao(Personagens[i].Curva.CalculaT(Personagens[i].tAtual * 100));
             if (i > 5) {
                 Personagens[i].direcao = -1;
             } else {
@@ -292,7 +291,9 @@ void DesenhaPersonagens(float tempoDecorrido)
     for (int i = 0; i < nInstancias; i++)
     {
         trocarCurva(i);
-        Personagens[i].AtualizaPosicao(tempoDecorrido);
+        Personagens[i].Curva.calculaComprimentoDaCurva();
+        Personagens[i].Velocidade = Personagens[i].Curva.CalculaT(100 * (T.getDeltaT() * 100));
+        Personagens[i].AtualizaPosicao(Personagens[i].Velocidade);        
         Personagens[i].desenha(); 
         if (i != 0) {
             if (validaColisao(i) && colidiu == -1) {
