@@ -57,6 +57,7 @@ unsigned int nCurvas;
 Ponto Min, Max;
 
 bool desenha = false;
+int colidiu = -1;
 
 Poligono Mapa, MeiaSeta, Mastro;
 int nInstancias = 10;
@@ -66,6 +67,7 @@ float angulo = 0.0;
 double nFrames = 0;
 double TempoTotal = 0;
 char teclaDigitada = 'w';
+int indexCurvaPrincipal = -1;
 
 
 // **********************************************************************
@@ -178,20 +180,28 @@ void atribuirPersonagensCurvas() {
     for (int i = 0; i < nInstancias; i++) {
 
 
-        int numeroRand = rand() % (11);
+        int numeroRand = (rand() % (nInstancias)) +1;
         if (i == 0) {
+
             Personagens[0].cor = Gold;
-            Personagens[0].modelo = [](int numeroRand) {
-               defineCor(numeroRand);
+            Personagens[0].modelo = [](int cor) {
+               if (colidiu == -1) {
+                    defineCor(cor);
+                } else if (colidiu == 1) {
+                    defineCor(White);
+                    colidiu = 0;
+                } else {
+                    defineCor(cor);
+                    colidiu = 1;
+                }
                DesenhaTriangulo();
             };
             AssociaPersonagemComCurva(0, 0, 1);
-        } else {
 
-                
+        } else {
             Personagens[i].cor = numeroRand + 10 * i/2;
-            Personagens[i].modelo = [](int numeroRand) {
-            defineCor(numeroRand);
+            Personagens[i].modelo = [](int cor) {
+            defineCor(cor);
             DesenhaTriangulo();
             };
 
@@ -225,6 +235,9 @@ void init()
     Max = Ponto(d, d);
 }
 
+bool isColisao() {
+
+}
 void trocarCurva(int indicePersonagem) 
 {   
     int curvasEncontradas[20];
@@ -251,8 +264,6 @@ void trocarCurva(int indicePersonagem)
                        curvasEncontradas[nCurvasEncontradas] = i;
                        curvaInicio[nCurvasEncontradas] = isInicio;
                        nCurvasEncontradas++;
-                       //AssociaPersonagemComCurva(indicePersonagem, i, isInicio);
-                       //return;
                 }
             } 
         }
@@ -269,6 +280,12 @@ void trocarCurva(int indicePersonagem)
         }
     } 
 }
+bool validaColisao(int indiceColisor) {
+    Ponto p = Personagens[0].posicao - Personagens[indiceColisor].posicao;
+    p.x = round(p.x);
+    p.y = round(p.y);
+    return p.x == 0 && p.y == 0;
+}
 
 // **********************************************************************
 void DesenhaPersonagens(float tempoDecorrido)
@@ -278,6 +295,12 @@ void DesenhaPersonagens(float tempoDecorrido)
         trocarCurva(i);
         Personagens[i].AtualizaPosicao(tempoDecorrido);
         Personagens[i].desenha(); 
+        if (i != 0) {
+            if (validaColisao(i) && colidiu == -1) {
+                cout << "colidiu com =" << i << endl;
+                colidiu = 1;
+            }
+        }
     }
 }
 
