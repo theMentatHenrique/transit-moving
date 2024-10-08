@@ -47,7 +47,7 @@ InstanciaBZ::InstanciaBZ()
     Escala = Ponto(1,1,1);
     
     nroDaCurva = 0;
-    proxCurva = -1;
+    curvaInicial = -1;
     tAtual = 0.0;
     direcao = 1;
 

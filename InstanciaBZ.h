@@ -30,7 +30,7 @@ public:
     float Rotacao;
 
     int nroDaCurva;
-    int proxCurva;
+    int curvaInicial;
     int cor;
     float Velocidade;
     float tAtual;

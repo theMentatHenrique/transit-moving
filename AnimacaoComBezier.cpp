@@ -48,7 +48,7 @@ Temporizador T;
 double AccumDeltaT = 0;
 Temporizador T2;
 
-InstanciaBZ Personagens[10];
+InstanciaBZ Personagens[11];
 
 Bezier Curvas[20];
 unsigned int nCurvas;
@@ -59,8 +59,8 @@ Ponto Min, Max;
 bool desenha = false;
 int colidiu = -1;
 
-Poligono Mapa, MeiaSeta, Mastro;
-int nInstancias = 10;
+Poligono Mapa;
+int nInstancias = 11;
 
 float angulo = 0.0;
 
@@ -165,8 +165,8 @@ void AssociaPersonagemComCurva(int p, int c, bool isInicio)
 // **********************************************************************
 void CarregaModelos()
 {
+    // le as curvas do arquivo
     nCurvas = Mapa.obterCurvas("example1.txt", Curvas);
-
     Ponto A, B;
     Mapa.obtemLimites(A,B);
     cout << "Limites do Mapa" << endl;
@@ -176,13 +176,10 @@ void CarregaModelos()
     cout << endl;
 }
 
-void atribuirPersonagensCurvas() {  
+void desenharPersonagens() {  
     for (int i = 0; i < nInstancias; i++) {
-
-
-        int numeroRand = (rand() % (nInstancias)) +1;
+        int numeroRand = (rand() % (nInstancias)) + 1;
         if (i == 0) {
-
             Personagens[0].cor = Gold;
             Personagens[0].modelo = [](int cor) {
                if (colidiu == -1) {
@@ -225,8 +222,8 @@ void init()
     // carrega os modelos armazenados em arquivos
     CarregaModelos();
     
-    
-    atribuirPersonagensCurvas();
+    // popula os triangulos
+    desenharPersonagens();
    
 
     // define is limites da área de desenho
@@ -240,18 +237,18 @@ bool isColisao() {
 }
 void trocarCurva(int indicePersonagem) 
 {   
+    // curvas que podem ser novos caminhos
     int curvasEncontradas[20];
-    bool curvaInicio[20];
-
+    bool direcoesCurvas[20];
     int nCurvasEncontradas = 0;
-    if (Personagens[indicePersonagem].proxCurva == -1) {
-        Personagens[indicePersonagem].proxCurva = Personagens[indicePersonagem].nroDaCurva;
+
+    if (Personagens[indicePersonagem].curvaInicial == -1) {
+        Personagens[indicePersonagem].curvaInicial = Personagens[indicePersonagem].nroDaCurva;
     }
     InstanciaBZ personagem = Personagens[indicePersonagem];
     Ponto posicao =  personagem.posicao;
     
     // se chegou ao final/inicio da curva atual
-
     if (personagem.tAtual == 0.0 || personagem.tAtual == 1) {
         for (int i = 0; i < nCurvas; i ++) {
             // se nao for a curva que ele ja esta
@@ -262,26 +259,31 @@ void trocarCurva(int indicePersonagem)
                        bool isInicio = false;
                        isInicio = posicao == Curvas[i].Coords[0];
                        curvasEncontradas[nCurvasEncontradas] = i;
-                       curvaInicio[nCurvasEncontradas] = isInicio;
+                       direcoesCurvas[nCurvasEncontradas] = isInicio;
                        nCurvasEncontradas++;
                 }
             } 
         }
+
+        // escolhe aleatoriamente uma curva entre as candidatas
         if (nCurvasEncontradas) {
             int numRand = rand() % nCurvasEncontradas;
-
-            AssociaPersonagemComCurva(indicePersonagem, curvasEncontradas[numRand], curvaInicio[numRand]);
-
-        } else if (Personagens[indicePersonagem].tAtual == 0) {
+            AssociaPersonagemComCurva(indicePersonagem, curvasEncontradas[numRand], direcoesCurvas[numRand]);
+            return;
+        } 
+        
+        // caso esteja em alguma extremidade e não haja curva a se direcionar
+        if (Personagens[indicePersonagem].tAtual == 0) {
             Personagens[indicePersonagem].direcao = 1;
         } else {
             Personagens[indicePersonagem].direcao = -1;
-
         }
     } 
 }
+
 bool validaColisao(int indiceColisor) {
     Ponto p = Personagens[0].posicao - Personagens[indiceColisor].posicao;
+    // arredonda para considerar pontas do triangulo
     p.x = round(p.x);
     p.y = round(p.y);
     return p.x == 0 && p.y == 0;
@@ -402,7 +404,7 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case ' ':
         Personagens[0].tAtual= 0.0;
-        AssociaPersonagemComCurva(0, Personagens[0].proxCurva, 1);
+        AssociaPersonagemComCurva(0, Personagens[0].curvaInicial, 1);
         desenha = !desenha;
         break;
     case 's':
