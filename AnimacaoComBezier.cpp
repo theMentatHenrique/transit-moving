@@ -213,6 +213,7 @@ void desenharPersonagens() {
     } 
 
 }
+
 void init()
 {
     // Define a cor do fundo da tela (AZUL)
