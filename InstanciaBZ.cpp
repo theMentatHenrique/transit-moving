@@ -124,5 +124,17 @@ void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
     Ponto P = Curva.Calcula(tAtual);
     
     posicao = P;
+
+    float deltat = 0.01;
+    Ponto aux;
+    if (direcao == 1) {
+        aux = Curva.Calcula(tAtual + deltaT);
+    } else {
+        aux = Curva.Calcula(tAtual - deltaT);
+    }
+
+    float x = aux.x - posicao.x;
+    float y = aux.y - posicao.y;
+    Rotacao = (atan2(y, x) * 180 / M_PI) - 90;
 }
 
