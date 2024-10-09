@@ -300,7 +300,6 @@ void DesenhaPersonagens(float tempoDecorrido)
         Personagens[i].desenha(); 
         if (i != 0) {
             if (houveColisao(i)) {
-                cout << "colidiu com o personagem num =" << i << endl;
                 time(&momentoColisao);
             }
         }
