@@ -50,7 +50,7 @@ InstanciaBZ::InstanciaBZ()
     curvaInicial = -1;
     tAtual = 0.0;
     direcao = 1;
-    Velocidade = 1000;
+    Velocidade = 2; // constante definida (aumentar fará os personagens irem mais rápidos)
 
 }
 InstanciaBZ::InstanciaBZ(Bezier C)
@@ -63,9 +63,7 @@ InstanciaBZ::InstanciaBZ(Bezier C)
     Curva = C;
     tAtual = 0;
     direcao = 1;
-    Velocidade = 1000;
-
-
+    Velocidade = 2; // constante definida (aumentar fará os personagens irem mais rápidos)
 }
 
 void InstanciaBZ::desenha()
@@ -98,11 +96,13 @@ Ponto InstanciaBZ::ObtemPosicao()
     glPopMatrix();
     return PosicaoDoPersonagem;
 }
+
 void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
 {
+    // calcula ritmo do personagem na curva dele
     Curva.calculaComprimentoDaCurva();
     float compCurva = Curva.ComprimentoTotalDaCurva;
-    float deslocamento = 2 * tempoDecorrido;
+    float deslocamento = Velocidade * tempoDecorrido;
     float deltaT = deslocamento/compCurva;
 
     if (direcao==1)
@@ -121,10 +121,9 @@ void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
         direcao = 1;
     }
 
-    Ponto P = Curva.Calcula(tAtual);
-    
-    posicao = P;
+    posicao = Curva.Calcula(tAtual);
 
+    // valor referencia para o prox ponto
     float deltat = 0.01;
     Ponto aux;
     if (direcao == 1) {
@@ -135,6 +134,7 @@ void InstanciaBZ::AtualizaPosicao(float tempoDecorrido)
 
     float x = aux.x - posicao.x;
     float y = aux.y - posicao.y;
+    // alinha a rotação a tangente do prox ponto
     Rotacao = (atan2(y, x) * 180 / M_PI) - 90;
 }
 

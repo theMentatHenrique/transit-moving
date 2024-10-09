@@ -18,6 +18,8 @@
 #include <ctime>
 #include <fstream>
 #include <string>
+#include <time.h>
+
 
 
 using namespace std;
@@ -49,6 +51,7 @@ double AccumDeltaT = 0;
 Temporizador T2;
 
 InstanciaBZ Personagens[11];
+int nInstancias = 11; // 10 inimigos + principal
 
 Bezier Curvas[20];
 unsigned int nCurvas;
@@ -57,17 +60,13 @@ unsigned int nCurvas;
 Ponto Min, Max;
 
 bool desenha = false;
-int colidiu = -1;
 
 Poligono Mapa;
-int nInstancias = 11;
-
-float angulo = 0.0;
 
 double nFrames = 0;
 double TempoTotal = 0;
 char teclaDigitada = 'w';
-int indexCurvaPrincipal = -1;
+time_t momentoColisao;
 
 
 // **********************************************************************
@@ -84,15 +83,11 @@ void animate()
     if (AccumDeltaT > 1.0 / 30) // fixa a atualiza��o da tela em 30
     {
         AccumDeltaT = 0;
-        angulo += 2;
         //Personagens[1].Rotacao++;
         glutPostRedisplay();
     }
     if (TempoTotal > 5.0)
     {
-   /*      cout << "Tempo Acumulado: " << TempoTotal << " segundos. ";
-        cout << "Nros de Frames sem desenho: " << nFrames << endl;
-        cout << "FPS(sem desenho): " << nFrames / TempoTotal << endl; */
         TempoTotal = 0;
         nFrames = 0;
     }
@@ -157,7 +152,6 @@ void AssociaPersonagemComCurva(int p, int c, bool isInicio)
     Personagens[p].nroDaCurva = c;
     Personagens[p].tAtual = isInicio ? 0.0 : 1;
     Personagens[p].direcao = isInicio ? 1 : -1;
-
 }
  
 // **********************************************************************
@@ -166,7 +160,9 @@ void AssociaPersonagemComCurva(int p, int c, bool isInicio)
 void CarregaModelos()
 {
     // le as curvas do arquivo
-    nCurvas = Mapa.obterCurvas("example1.txt", Curvas);
+    string fileNamePontos = "example1.txt";
+    string fileNameCurvas = "example1-curves.txt";
+    nCurvas = Mapa.obterCurvas(fileNamePontos, Curvas);
     Ponto A, B;
     Mapa.obtemLimites(A,B);
     cout << "Limites do Mapa" << endl;
@@ -176,35 +172,36 @@ void CarregaModelos()
     cout << endl;
 }
 
-void desenharPersonagens() {  
+void desenharPersonagens()
+{  
     for (int i = 0; i < nInstancias; i++) {
         int numeroRand = (rand() % (nInstancias)) + 1;
+        // Personagens[0] == protagonista
         if (i == 0) {
+            // protagonista sempre tera cor dourada
             Personagens[0].cor = Gold;
             Personagens[0].modelo = [](int cor) {
-               if (colidiu == -1) {
+               // muda a cor por um periodo se colidiu
+               time_t tempoAtual; 
+               if (difftime(time(&tempoAtual), momentoColisao) > 0.5) {
                     defineCor(cor);
-                } else if (colidiu == 1) {
-                    defineCor(White);
-                    colidiu = 0;
                 } else {
-                    defineCor(cor);
-                    colidiu = 1;
+                    defineCor(White);
                 }
                DesenhaTriangulo();
             };
             AssociaPersonagemComCurva(0, 0, 1);
-
         } else {
             Personagens[i].cor = numeroRand + 10 * i/2;
             Personagens[i].modelo = [](int cor) {
             defineCor(cor);
             DesenhaTriangulo();
             };
-
             AssociaPersonagemComCurva(i, numeroRand, 1);
+            // inimigos tem spaw no meio da curva
             Personagens[i].tAtual = 0.5;
-            if (i > 5) {
+            // cada metade em sentido oposto
+            if (i >= 5) {
                 Personagens[i].direcao = -1;
             } else {
                 Personagens[i].direcao = 1;
@@ -234,14 +231,17 @@ void init()
 
 void trocarCurva(int indicePersonagem) 
 {   
-    // curvas que podem ser novos caminhos
+    // curvas candidatas ao personagem seguir
     int curvasEncontradas[20];
-    bool direcoesCurvas[20];
     int nCurvasEncontradas = 0;
+    // sinaliza se o ponto encontrado da curva é final ou inicial
+    bool direcoesCurvas[20];
 
+    // salva a curva que o personagem teve spawn
     if (Personagens[indicePersonagem].curvaInicial == -1) {
         Personagens[indicePersonagem].curvaInicial = Personagens[indicePersonagem].nroDaCurva;
     }
+
     InstanciaBZ personagem = Personagens[indicePersonagem];
     Ponto posicao =  personagem.posicao;
     
@@ -278,7 +278,7 @@ void trocarCurva(int indicePersonagem)
     } 
 }
 
-bool validaColisao(int indiceColisor) {
+bool houveColisao(int indiceColisor) {
     Ponto p = Personagens[0].posicao - Personagens[indiceColisor].posicao;
     // arredonda para considerar pontas do triangulo
     p.x = round(p.x);
@@ -296,9 +296,8 @@ void DesenhaPersonagens(float tempoDecorrido)
         Personagens[i].AtualizaPosicao(tempoDecorrido);        
         Personagens[i].desenha(); 
         if (i != 0) {
-            if (validaColisao(i) && colidiu == -1) {
-                cout << "colidiu com o personagem numero " << i << endl;
-                colidiu = 1;
+            if (houveColisao(i)) {
+                time(&momentoColisao);
             }
         }
 
@@ -316,9 +315,7 @@ void DesenhaPoligonoDeControle(int curva)
     }
     glEnd();
 }
-// **********************************************************************
-//
-// **********************************************************************
+
 void DesenhaCurvas()
 {
     for (int i = 0; i < nCurvas; i++)
@@ -329,9 +326,7 @@ void DesenhaCurvas()
      
     }
 }
-// **********************************************************************
-//  void display( void )
-// **********************************************************************
+
 void display(void)
 {
 
