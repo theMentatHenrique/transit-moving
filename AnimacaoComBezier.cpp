@@ -279,11 +279,14 @@ void trocarCurva(int indicePersonagem)
 }
 
 bool houveColisao(int indiceColisor) {
-    Ponto p = Personagens[0].posicao - Personagens[indiceColisor].posicao;
-    // arredonda para considerar pontas do triangulo
-    p.x = round(p.x);
-    p.y = round(p.y);
-    return p.x == 0 && p.y == 0;
+    if (Personagens[indiceColisor].nroDaCurva == Personagens[0].nroDaCurva) {
+        Ponto p = Personagens[0].posicao - Personagens[indiceColisor].posicao;
+        // arredonda para considerar pontas do triangulo
+        p.x = round(p.x);
+        p.y = round(p.y);
+        return p.x == 0 && p.y == 0;
+    }
+    return 0;
 }
 
 // **********************************************************************
@@ -297,6 +300,7 @@ void DesenhaPersonagens(float tempoDecorrido)
         Personagens[i].desenha(); 
         if (i != 0) {
             if (houveColisao(i)) {
+                cout << "colidiu com o personagem num =" << i << endl;
                 time(&momentoColisao);
             }
         }
