@@ -112,7 +112,7 @@ void Poligono::LePoligono(const char *nome)
 
 }
 
-int Poligono ::obterCurvas(string fileNamePontos, Bezier curvas[]) {
+int Poligono ::obterCurvas(string fileNamePontos,string fileNameCurvas, Bezier curvas[]) {
     ifstream input;           
     input.open(fileNamePontos, ios::in); 
     if (!input)
@@ -142,13 +142,13 @@ int Poligono ::obterCurvas(string fileNamePontos, Bezier curvas[]) {
     input.close();
 
 
-    input.open("example1-curves.txt", ios::in); //arq.open(nome, ios::out);
+    input.open(fileNameCurvas, ios::in); //arq.open(nome, ios::out);
     if (!input)
     {
-        cout << "Erro ao ler example1-curves.txt" << fileNamePontos << ". " << endl;
+        cout << "Erro ao ler " << fileNameCurvas << ". " << endl;
         exit(0);
     }
-    cout << "Lendo arquivo " << fileNamePontos << "...";
+    cout << "Lendo arquivo " << fileNameCurvas << "...";
     //int nLinha = 0;
     unsigned int qtdCurvas;
     

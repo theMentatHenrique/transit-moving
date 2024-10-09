@@ -50,7 +50,7 @@ public:
     void desenhaAresta(int n);
     void getAresta(int i, Ponto &P1, Ponto &P2);
     void alteraVertice(int i, Ponto P);
-    int obterCurvas(string fileNamePontos, Bezier curvas[]);
+    int obterCurvas(string fileNamePontos, string fileNameCurvas, Bezier curvas[]);
 };
 
 #endif

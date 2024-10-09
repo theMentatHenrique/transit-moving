@@ -162,7 +162,7 @@ void CarregaModelos()
     // le as curvas do arquivo
     string fileNamePontos = "example1.txt";
     string fileNameCurvas = "example1-curves.txt";
-    nCurvas = Mapa.obterCurvas(fileNamePontos, Curvas);
+    nCurvas = Mapa.obterCurvas(fileNamePontos, fileNameCurvas, Curvas);
     Ponto A, B;
     Mapa.obtemLimites(A,B);
     cout << "Limites do Mapa" << endl;
@@ -279,14 +279,12 @@ void trocarCurva(int indicePersonagem)
 }
 
 bool houveColisao(int indiceColisor) {
-    if (Personagens[indiceColisor].nroDaCurva == Personagens[0].nroDaCurva) {
-        Ponto p = Personagens[0].posicao - Personagens[indiceColisor].posicao;
-        // arredonda para considerar pontas do triangulo
-        p.x = round(p.x);
-        p.y = round(p.y);
-        return p.x == 0 && p.y == 0;
-    }
-    return 0;
+    Ponto p = Personagens[0].posicao - Personagens[indiceColisor].posicao;
+    // arredonda para considerar pontas do triangulo
+    p.x = round(p.x);
+    p.y = round(p.y);
+    return p.x == 0 && p.y == 0;
+  
 }
 
 // **********************************************************************
